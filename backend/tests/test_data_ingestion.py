@@ -21,6 +21,9 @@ class DataIngestionTestCase(unittest.TestCase):
         self.assertEqual(json_response['message'], "Eye tracking data received and processed")
         self.assertIn('data', json_response)
         self.assertEqual(json_response['data']['user_id'], "test_user_1")
+        self.assertIn('extracted_eye_features', json_response['data'])
+        self.assertIn('fixation_duration_avg', json_response['data']['extracted_eye_features'])
+        self.assertIn('blink_rate', json_response['data']['extracted_eye_features'])
 
     def test_receive_voice_analysis_data(self):
         payload = {"user_id": "test_user_2", "timestamp": "2024-07-30T10:05:00Z", "transcript": "Hello world", "confidence": 0.95}
@@ -32,6 +35,9 @@ class DataIngestionTestCase(unittest.TestCase):
         self.assertEqual(json_response['message'], "Voice analysis data received and processed")
         self.assertIn('data', json_response)
         self.assertEqual(json_response['data']['user_id'], "test_user_2")
+        self.assertIn('extracted_voice_features', json_response['data'])
+        self.assertIn('speech_rate', json_response['data']['extracted_voice_features'])
+        self.assertIn('confidence_score_mock', json_response['data']['extracted_voice_features'])
 
 if __name__ == '__main__':
     unittest.main()
